@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"net/http"
-	u "go-contacts/utils"
-	"go-contacts/models"
 	"encoding/json"
+	"net/http"
+
+	"github.com/weirdwiz/osiris/models"
+	u "github.com/weirdwiz/osiris/utils"
 )
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
@@ -32,4 +33,3 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 	resp := models.Login(account.Email, account.Password)
 	u.Respond(w, resp)
 }
-
