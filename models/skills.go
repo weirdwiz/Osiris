@@ -11,10 +11,13 @@ type SkillList struct {
 
 // Skill struct contains the skill
 type Skill struct {
-	ID    int        `json:"id"`
-	Name  string     `json:"name"`
-	Users []*Account `json:"users" gorm:"many2many:account_skills"`
+	ID          int        `json:"id"`
+	Name        string     `json:"name"`
+	Description string     `json:"decription"`
+	Teachers    []*Account `json:"teachers" gorm:"many2many:account_teachers"`
 }
+
+// func (s *Skill) GetTeachers() ()
 
 //GetAllSkills gets all skills
 func GetAllSkills() []Skill {
@@ -30,4 +33,14 @@ func GetAllSkills() []Skill {
 		sk[i.ID] = i.Name
 	}
 	return skills
+}
+
+// GetSkill returns the skill using id number
+func GetSkill(u uint) *Skill {
+	s := &Skill{}
+	GetDB().Table("skills").Where("id = ?", u).First(s)
+	if s.Name == "" {
+		return nil
+	}
+	return s
 }

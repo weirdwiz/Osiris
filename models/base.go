@@ -33,7 +33,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&Account{}, &Skill{})
+	db.Debug().AutoMigrate(&Account{}, &Skill{}, &TeachList{})
 }
 
 // GetDB returns the instance of db

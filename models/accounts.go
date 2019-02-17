@@ -24,7 +24,7 @@ type Account struct {
 	Password string   `json:"password"`
 	Token    string   `json:"token" sql:"-"`
 	Points   int      `json:"points"`
-	Skills   []*Skill `json:"skills" gorm:"many2many:account_skills"`
+	Teach    []*Skill `json:"teach" gorm:"many2many:account_teachers"`
 }
 
 //Validate incoming user details...
@@ -91,12 +91,24 @@ func (account *Account) Create() map[string]interface{} {
 	return response
 }
 
-// SetSkills to the user
-func (account *Account) SetSkills(skillID []int) map[string]interface{} {
+// SetTeacher to the user
+func (account *Account) SetTeacher(skillID []int) map[string]interface{} {
 	skills := GetAllSkills()
 	for _, i := range skills {
 		if intInSlice(i.ID, skillID) {
-			GetDB().Model(&account).Association("Skills").Append(i)
+			GetDB().Model(&account).Association("Teach").Append(i)
+		}
+	}
+	resp := u.Message(true, "success")
+	return resp
+}
+
+// SetLearn to the user
+func (account *Account) SetLearn(skillID []int) map[string]interface{} {
+	skills := GetAllSkills()
+	for _, i := range skills {
+		if intInSlice(i.ID, skillID) {
+			GetDB().Model(&account).Association("Learn").Append(i)
 		}
 	}
 	resp := u.Message(true, "success")
