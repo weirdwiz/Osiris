@@ -18,3 +18,5 @@ osiris
 # Vendor
 vendor
 
+# Env
+.env
