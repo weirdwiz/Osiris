@@ -92,10 +92,15 @@ func (account *Account) Create() map[string]interface{} {
 }
 
 // SetSkills to the user
-func (account *Account) SetSkills(skills []int) map[string]interface{} {
-	response := u.Message(false, "Method not implemented")
-	response["account"] = account
-	return response
+func (account *Account) SetSkills(skillID []int) map[string]interface{} {
+	skills := GetAllSkills()
+	for _, i := range skills {
+		if intInSlice(i.ID, skillID) {
+			GetDB().Model(&account).Association("Skills").Append(i)
+		}
+	}
+	resp := u.Message(true, "success")
+	return resp
 }
 
 // Login an account
@@ -139,4 +144,13 @@ func GetUser(u uint) *Account {
 
 	acc.Password = ""
 	return acc
+}
+
+func intInSlice(a int, list []int) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
 }

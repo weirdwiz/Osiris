@@ -4,11 +4,16 @@ import (
 	"fmt"
 )
 
+// SkillList list for skills (hack lol)
+type SkillList struct {
+	List []int `json:"skills"`
+}
+
 // Skill struct contains the skill
 type Skill struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	// Users []*Account `json:"users" gorm:"many2many:account_skills"`
+	ID    int        `json:"id"`
+	Name  string     `json:"name"`
+	Users []*Account `json:"users" gorm:"many2many:account_skills"`
 }
 
 //GetAllSkills gets all skills
