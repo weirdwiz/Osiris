@@ -5,10 +5,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	"github.com/weirdwiz/osiris/app"
 	"github.com/weirdwiz/osiris/controllers"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -17,7 +16,8 @@ func main() {
 
 	router.HandleFunc("/api/user/new", controllers.CreateAccount).Methods("POST")
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
-
+	// router.HandleFunc("/api/user/skill/new", controllers.NewSkill).Methods("POST")
+	router.HandleFunc("/api/skill/all", controllers.GetSkills).Methods("GET")
 	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
 	//router.NotFoundHandler = app.NotFoundHandler

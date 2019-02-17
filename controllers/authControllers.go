@@ -8,6 +8,7 @@ import (
 	u "github.com/weirdwiz/osiris/utils"
 )
 
+// CreateAccount creates a new account
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
@@ -21,6 +22,7 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+// Authenticate authenticates an account
 var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}

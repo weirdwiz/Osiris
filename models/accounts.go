@@ -19,9 +19,12 @@ type Token struct {
 //Account a struct to rep user account
 type Account struct {
 	gorm.Model
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Token    string `json:"token" sql:"-"`
+	Username string   `json:"username"`
+	Email    string   `json:"email"`
+	Password string   `json:"password"`
+	Token    string   `json:"token" sql:"-"`
+	Points   int      `json:"points"`
+	Skills   []*Skill `json:"skills" gorm:"many2many:account_skills"`
 }
 
 //Validate incoming user details...
@@ -45,6 +48,15 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 	}
 	if temp.Email != "" {
 		return u.Message(false, "Email address already in use by another user."), false
+	}
+
+	//check for errors and duplicate username
+	err = GetDB().Table("accounts").Where("username = ?", account.Username).First(temp).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return u.Message(false, "Connection error. Please retry"), false
+	}
+	if temp.Email != "" {
+		return u.Message(false, "Username already in use by another user."), false
 	}
 
 	return u.Message(false, "Requirement passed"), true
@@ -75,6 +87,13 @@ func (account *Account) Create() map[string]interface{} {
 	account.Password = "" //delete password
 
 	response := u.Message(true, "Account has been created")
+	response["account"] = account
+	return response
+}
+
+// SetSkills to the user
+func (account *Account) SetSkills(skills []int) map[string]interface{} {
+	response := u.Message(false, "Method not implemented")
 	response["account"] = account
 	return response
 }
