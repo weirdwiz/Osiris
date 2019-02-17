@@ -1,9 +1,5 @@
 package models
 
-import (
-	"fmt"
-)
-
 // SkillList list for skills (hack lol)
 type SkillList struct {
 	List []int `json:"skills"`
@@ -17,21 +13,17 @@ type Skill struct {
 	Teachers    []*Account `json:"teachers" gorm:"many2many:account_teachers"`
 }
 
-// func (s *Skill) GetTeachers() ()
+// GetTeachersForSkill pretty obvious
+func (s *Skill) GetTeachersForSkill() []*Teacher {
+	t := make([]*Teacher, 0)
+	GetDB().Table("teachers").Where("skill_id = ?", s.ID).Find(&t)
+	return t
+}
 
 //GetAllSkills gets all skills
 func GetAllSkills() []Skill {
 	skills := make([]Skill, 10)
 	GetDB().Table("skills").Find(&skills)
-	// if err != nil {
-	// 	fmt.Println("Fuck me ", err)
-	// 	return nil
-	// }
-	fmt.Println(skills)
-	sk := make(map[int]string, 10)
-	for _, i := range skills {
-		sk[i.ID] = i.Name
-	}
 	return skills
 }
 

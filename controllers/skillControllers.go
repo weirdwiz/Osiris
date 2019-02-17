@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/weirdwiz/osiris/models"
@@ -25,14 +24,4 @@ func GetSkills(w http.ResponseWriter, r *http.Request) {
 	resp := u.Message(true, "success")
 	resp["skills"] = data
 	u.Respond(w, resp)
-}
-
-// TeachNew route to create a new teacher
-func TeachNew(w http.ResponseWriter, r *http.Request) {
-	f := models.Teacher{}
-	userID := r.Context().Value("user").(uint)
-	json.NewDecoder(r.Body).Decode(&f)
-	f.UserID = userID
-	models.GetDB().Create(f)
-	u.Respond(w, u.Message(true, "success"))
 }
