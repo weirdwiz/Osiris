@@ -3,7 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/weirdwiz/osiris/models"
 	u "github.com/weirdwiz/osiris/utils"
 )
@@ -20,8 +22,9 @@ func TeacherNew(w http.ResponseWriter, r *http.Request) {
 
 //GetAllTeachers Sends all teachers regarding the skill
 func GetAllTeachers(w http.ResponseWriter, r *http.Request) {
-	s := models.Skill{}
-	json.NewDecoder(r.Body).Decode(&s)
+	sid := mux.Vars(r)["id"]
+	i, _ := strconv.ParseUint(sid, 10, 16)
+	s := models.GetSkill(uint(i))
 	t := s.GetTeachersForSkill()
 	resp := u.Message(true, "success")
 	resp["teachers"] = t
