@@ -17,3 +17,13 @@ func TeacherNew(w http.ResponseWriter, r *http.Request) {
 	models.GetDB().Create(f)
 	u.Respond(w, u.Message(true, "success"))
 }
+
+//GetAllTeachers Sends all teachers regarding the skill
+func GetAllTeachers(w http.ResponseWriter, r *http.Request) {
+	s := models.Skill{}
+	json.NewDecoder(r.Body).Decode(&s)
+	t := s.GetTeachersForSkill()
+	resp := u.Message(true, "success")
+	resp["teachers"] = t
+	u.Respond(w, resp)
+}
